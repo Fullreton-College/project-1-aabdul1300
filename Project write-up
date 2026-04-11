@@ -1,0 +1,13 @@
+PROJECT 1 WRITE UP
+The objective of this project was to develop a modular C++ application capable of analyzing a text file and reporting the frequency of every unique word found within it. For this specific implementation, the program processed a paragraph from Sherlock Holmes: A Scandal in Bohemia.
+The program utilizes the C++ Standard Template Library (STL), specifically focusing on std::vector, std::string, and std::pair. To ensure the data was processed accurately, the project followed a "pipeline" methodology:
+File Input & Data Cleaning: Reading raw strings from holmes.txt.
+Normalization: Converting all characters to lowercase and removing punctuation to ensure "Woman," "woman," and "woman." are all counted as the same entity.
+Sorting: Organizing the vector alphabetically so that identical words are grouped together.
+Frequency Aggregation: Iterating through the sorted list to count occurrences and storing the results in a vector of pairs.
+The code was designed with modularity in mind, broken down into the following key functions:
+cleanWord(string): A helper utility that iterates through each character of a string, removes non-alphabetic characters, and converts them to lowercase.
+getWords(vector<string>&, ifstream&): This function handles the file stream. It extracts each word from the file, sends it to the cleaner, and stores the valid result into a vector.
+sortWords(vector<string>&): Uses the std::sort algorithm to prepare the data for the counting phase.
+getWordCounts(vector<string>&): The core logic of the project. It traverses the sorted vector and creates std::pair<string, int> objects, where the first element is the unique word and the second is its count.
+This project demonstrates the power of C++ vectors and pairs in data processing. By breaking the task into specialized functions, the code remains readable, maintainable, and easily adaptable for larger text files or more complex linguistic analysis.
