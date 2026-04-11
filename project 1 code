@@ -1,0 +1,80 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <utility> 
+
+using namespace std;
+
+string cleanWord(string w) {
+    string result = "";
+    for (char c : w) {
+        if (ispunct(c)) continue;
+        result += tolower(c);
+    }
+    return result;
+}
+
+void getWords(vector<string> &words, ifstream &file) {
+    string rawWord;
+    while (file >> rawWord) {
+        string cleaned = cleanWord(rawWord);
+        if (!cleaned.empty()) {
+            words.push_back(cleaned);
+        }
+    }
+}
+
+void sortWords(vector<string> &words) {
+    sort(words.begin(), words.end());
+}
+
+vector<pair<string, int>> getWordCounts(vector<string> &words) {
+    vector<pair<string, int>> counts;
+    
+    if (words.empty()) return counts;
+
+    string currentWord = words[0];
+    int currentCount = 1;
+
+    for (size_t i = 1; i < words.size(); i++) {
+        if (words[i] == currentWord) {
+            currentCount++;
+        } else {
+            counts.push_back(make_pair(currentWord, currentCount));
+            currentWord = words[i];
+            currentCount = 1;
+        }
+    }
+    
+    counts.push_back(make_pair(currentWord, currentCount));
+
+    return counts;
+}
+
+int main() {
+    ifstream inputFile("holmes.txt");
+    
+    if (!inputFile) {
+        cerr << "Error: Could not open holmes.txt" << endl;
+        return 1;
+    }
+
+    vector<string> wordList;
+    
+    getWords(wordList, inputFile);
+    inputFile.close();
+
+    sortWords(wordList);
+
+    vector<pair<string, int>> frequencies = getWordCounts(wordList);
+
+    cout << "Word Frequencies in holmes.txt:" << endl;
+    cout << "-------------------------------" << endl;
+    for (const auto& p : frequencies) {
+        cout << p.first << ": " << p.second << endl;
+    }
+
+    return 0;
+}
